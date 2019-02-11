@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <style>
+        .nav-side-menu {
+            overflow: auto;
+            font-family: verdana;
+            font-size: 12px;
+            font-weight: 200;
+            background-color: #2e353d;
+            position: fixed;
+            top: 0px;
+            width: 300px;
+            height: 100%;
+            color: #e1ffff;
+        }
+        .body {
+            margin-left: 300px;
+        }
+        .nav-side-menu .brand {
+            background-color: #23282e;
+            line-height: 50px;
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            height: 50px;
+        }
+        .nav-side-menu .toggle-btn {
+            display: none;
+        }
+        .nav-side-menu ul,
+        .nav-side-menu li {
+            list-style: none;
+            padding: 0px;
+            margin: 0px;
+            line-height: 35px;
+            cursor: pointer;
+            /*
+              .collapsed{
+                 .arrow:before{
+                           font-family: FontAwesome;
+                           content: "\f053";
+                           display: inline-block;
+                           padding-left:10px;
+                           padding-right: 10px;
+                           vertical-align: middle;
+                           float:right;
+                      }
+               }
+          */
+        }
+        .nav-side-menu ul :not(collapsed) .arrow:before,
+        .nav-side-menu li :not(collapsed) .arrow:before {
+            font-family: FontAwesome;
+            content: "\f078";
+            display: inline-block;
+            padding-left: 10px;
+            padding-right: 10px;
+            vertical-align: middle;
+            float: right;
+        }
+        .nav-side-menu ul .active,
+        .nav-side-menu li .active {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+        }
+        .nav-side-menu ul .sub-menu li.active,
+        .nav-side-menu li .sub-menu li.active {
+            color: #d19b3d;
+        }
+
+        .nav-side-menu ul .sub-menu li.active a,
+        .nav-side-menu li .sub-menu li.active a {
+            color: #d19b3d;
+        }
+        .nav-side-menu ul .sub-menu li,
+        .nav-side-menu li .sub-menu li {
+            background-color: #181c20;
+            border: none;
+            line-height: 28px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        .nav-side-menu ul .sub-menu li:hover,
+        .nav-side-menu li .sub-menu li:hover {
+            background-color: #020203;
+        }
+        .nav-side-menu ul .sub-menu li:before,
+        .nav-side-menu li .sub-menu li:before {
+            font-family: Fontawesome;
+            content: "\f105";
+            display: inline-block;
+            padding-left: 20px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+        .nav-side-menu li {
+            padding-left: 0px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        .nav-side-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        .nav-side-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        .nav-side-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        @media (max-width: 767px) {
+            .nav-side-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .body {
+                margin-left: 0px;
+            }
+            .nav-side-menu .toggle-btn {
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+            .brand {
+                text-align: left !important;
+                font-size: 22px;
+                padding-left: 20px;
+                line-height: 50px !important;
+            }
+        }
+        @media (min-width: 767px) {
+            .nav-side-menu .menu-list .menu-content {
+                display: block;
+            }
+        }
+        body {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .nav-side-menu ul .sub-menu ul .sub-line li.active,
+        .nav-side-menu li .sub-menu li .sub-line li.active {
+            color: #d19b3d;
+        }
+
+        .nav-side-menu ul .sub-menu li .sub-line li.active a,
+        .nav-side-menu li .sub-menu li .sub-line li.active a {
+            color: #d19b3d;
+        }
+        .nav-side-menu ul .sub-menu li .sub-line li,
+        .nav-side-menu li .sub-menu li .sub-line li {
+            background-color: #181c20;
+            border: none;
+            line-height: 28px;
+            border-bottom: 1px solid #23282e;
+            margin-left: 0px;
+        }
+        .nav-side-menu ul .sub-menu li .sub-line li:hover,
+        .nav-side-menu li .sub-menu li .sub-line li:hover {
+            background-color: #020203;
+        }
+        .nav-side-menu ul .sub-menu li .sub-line li:before,
+        .nav-side-menu li .sub-menu li .sub-line li:before {
+            font-family: FontAwesome;
+            content: "\f105";
+            display: inline-block;
+            padding-left: 100px;
+            padding-right: 10px;
+            vertical-align: middle;
+        }
+
+        .nav-side-menu .sub-menu li {
+            padding-left: 20px;
+            border-left: 3px solid #2e353d;
+            border-bottom: 1px solid #23282e;
+        }
+        .nav-side-menu .sub-menu li a {
+            text-decoration: none;
+            color: #e1ffff;
+        }
+        .sub-menu li a i {
+            padding-left: 10px;
+            width: 20px;
+            padding-right: 20px;
+        }
+        .nav-side-menu li .sub-menu li:hover {
+            border-left: 3px solid #d19b3d;
+            background-color: #4f5b69;
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        @media (max-width: 767px) {
+            .nav-side-menu .sub-menu {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .nav-side-menu .sub-menu .toggle-btn {
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+
+            .sub-line ul .sub-press li.active,
+            .sub-line li .sub-press li.active {
+                color: #d19b3d;
+            }
+
+            .sub-line ul .sub-press li.active a,
+            .sub-line li .sub-press li.active a {
+                color: #d19b3d;
+            }
+
+            .sub-line ul .sub-press li,
+            .sub-line li .sub-press li {
+                background-color: #181c20;
+                border: none;
+                line-height: 28px;
+                border-bottom: 1px solid #23282e;
+                margin-left: 0px;
+            }
+
+            .sub-line ul .sub-press li:hover,
+            .sub-line li .sub-press li:hover {
+                background-color: #020203;
+            }
+
+            .sub-line ul .sub-press li:before,
+            .sub-line li .sub-press li:before {
+                font-family: Arial;
+                content: "\f105";
+                display: inline-block;
+                padding-left: 50px;
+                padding-right: 10px;
+                vertical-align: middle;
+            }
+
+            .sub-line li {
+                padding-left: 20px;
+                border-left: 3px solid #2e353d;
+                border-bottom: 1px solid #23282e;
+            }
+
+            .sub-line li a {
+                text-decoration: none;
+                color: #e1ffff;
+            }
+
+            .sub-line li a i {
+                padding-left: 50px;
+                width: 20px;
+                padding-right: 20px;
+            }
+
+            .sub-line li:hover {
+                border-left: 3px solid #d19b3d;
+                background-color: #4f5b69;
+                -webkit-transition: all 1s ease;
+                -moz-transition: all 1s ease;
+                -o-transition: all 1s ease;
+                -ms-transition: all 1s ease;
+                transition: all 1s ease;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .sub-line {
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .sub-line .toggle-btn {
+                display: block;
+                cursor: pointer;
+                position: absolute;
+                right: 10px;
+                top: 10px;
+                z-index: 10 !important;
+                padding: 3px;
+                background-color: #ffffff;
+                color: #000;
+                width: 40px;
+                text-align: center;
+            }
+        }
+
+        .body .header {
+            height: 50px;
+        }
+
+        .objectList {
+            width: 100%;
+            font-size: 0.8em;
+        }
+
+        .upload .drag-and-drop {
+            border: 3px solid #e1ffff;
+            padding: 8px;
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .modal-dialog{
+            position: relative;
+            display: table; /* This is important */
+            overflow-y: auto;
+            overflow-x: auto;
+            width: auto;
+            min-width: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="nav-side-menu">
+    <div class="brand">MS3 Browser</div>
+    <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+    <div class="menu-list">
+
+        <ul id="menu-content" class="menu-content collapse out">
+            <li>
+                <a href="#">
+                    <i class="fa fa-dashboard fa-lg"></i> Dashboard
+                </a>
+            </li>
+
+            <li  data-toggle="collapse" data-target="#buckets" class="collapsed active">
+                <a href="#"><i class="fa fa-gift fa-lg"></i> Buckets <span class="arrow"></span></a>
+            </li>
+            <ul class="sub-menu collapse show" id="buckets">
+                <li v-for="item in list" :class="{'active': item.active}"><a @click="goBucket(item.name)">{{item.name}}</a></li>
+            </ul>
+        </ul>
+    </div>
+
+    <div id="bucketCreate" style="margin-top: 40px;">
+        <div>버킷 생성하기</div>
+        <div>
+            <input type="text" v-model="bucketName" />
+        </div>
+        <div>
+            <button type="button" v-on:click="submit()" class="btn btn-primary">생성하기</button>
+        </div>
+    </div>
+
+    <div id="upload" class="upload" style="margin-top: 40px;">
+        <div class="drag-and-drop" id="uploadDropDown">
+            <div>
+                Upload 할 파일을 Drag and drop 해주세요
+            </div>
+        </div>
+    </div>
+</div>
+<div class="body">
+    <div class="header">
+
+    </div>
+    <div class="container">
+        <div id="objectList">
+            <div>
+                Bucket Name : {{bucketName}}
+            </div>
+            <table class="objectList">
+                <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Size</th>
+                    <th>Last modified</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in list">
+                    <td><a href="#" v-on:click="openObject(item.bucketName, item.key)">{{item.key}}</a></td>
+                    <td>{{item.size}}</td>
+                    <td>{{item.lastModified}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="objectShowModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{bucketName}}/{{objectKey}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div v-if="isImage">
+                    <img :src="image_src" style="min-height: 100px; max-height: 800px; background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAJElEQVQoU2NsaGj4z4AEGhoaGJH5jHRQgGwfiI1uJYqDaKMAAGJTGgXhahM7AAAAAElFTkSuQmCC) repeat" />
+                </div>
+                <div v-else>
+                    <textarea style="min-width: 600px; min-height: 100px;">{{object_data}}</textarea>
+                </div>
+                <div>
+                    <textarea style="min-width: 600px; min-height: 100px;">{{jsonEncode(objectMetadata)}}</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="objectUploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">File upload</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">Bucket</div>
+                    <div class="col-9"><input type="text" v-model="bucketName" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-3">Key</div>
+                    <div class="col-9"><input type="text" v-model="objectKey" /></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="onClose()">Close</button>
+                <button type="button" class="btn btn-primary" :disabled="submitting" v-on:click="confirm()"><i v-show="submitting" class="fas fa-star-christmas fa-spin"></i> Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/vue@2.5.21/dist/vue.js" integrity="sha384-av7a40qvniQJlzaRkLiE3dUj08AsYxc//RGG5AoErYdSBDUbyvEHSv8pJ/HZ98H5" crossorigin="anonymous"></script>
+<script>
+    var v_buckets = new Vue({
+        el: '#buckets',
+        data: {
+            list: []
+        },
+        methods: {
+            goBucket: async function(bucketName) {
+                listResult = await bucketGetFileList(bucketName);
+                v_objectList.bucketName = bucketName;
+                v_objectList.list = listResult.list;
+            },
+            reload: async function() {
+                listResult = await bucketsGetList();
+                this.list = listResult.list;
+            }
+        },
+        created: async function() {
+            await this.reload();
+        }
+    });
+
+    var v_objectList = new Vue({
+        el: '#objectList',
+        data: {
+            bucketName: '',
+            list: []
+        },
+        methods: {
+            openObject: async function(bucketName, key) {
+                var reqResult = await objectGetMetadata(bucketName, key);
+                v_objectShowModal.bucketName = bucketName;
+                v_objectShowModal.objectKey = key;
+                v_objectShowModal.objectMetadata = reqResult.metadata;
+                v_objectShowModal.show();
+            }
+        }
+    });
+
+    function blobToDataURL(blob, callback) {
+        var a = new FileReader();
+        a.onload = function(e) {callback(e.target.result);}
+        a.readAsDataURL(blob);
+    }
+
+    var v_upload = new Vue({
+        el: '#upload',
+        data: {
+            selectedFile: null
+        },
+        methods: {
+            selectFile: function(file) {
+                v_objectUploadModal.selectFile(file);
+            }
+        },
+        created: function() {
+            var _this = this;
+            this.$nextTick(function() {
+                var dropZone = $("#uploadDropDown");
+                //Drag기능
+                dropZone.on('dragenter', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    // 드롭다운 영역 css
+                    dropZone.css('background-color', 'rgba(64,64,255,40)');
+                });
+                dropZone.on('dragleave', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    // 드롭다운 영역 css
+                    dropZone.css('background-color', 'rgba(64,64,255,0)');
+                });
+                dropZone.on('dragover', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    // 드롭다운 영역 css
+                    dropZone.css('background-color', 'rgba(64,64,255,40)');
+                });
+                dropZone.on('drop', function (e) {
+                    var files = e.originalEvent.dataTransfer.files;
+
+                    e.preventDefault();
+                    // 드롭다운 영역 css
+                    dropZone.css('background-color', 'rgba(255,255,255,0)');
+
+                    if (files != null) {
+                        if (files.length < 1) {
+                            alert("폴더 업로드 불가");
+                            return;
+                        }
+                        _this.selectFile(files[0])
+                    } else {
+                        alert("ERROR");
+                    }
+                });
+            });
+        }
+    });
+
+    var v_objectUploadModal = new Vue({
+        el: '#objectUploadModal',
+        data: {
+            selectedFile: null,
+            bucketName: '',
+            objectKey: '',
+            submitting: false
+        },
+        methods: {
+            selectFile: function(file) {
+                this.selectedFile = file;
+                this.bucketName = v_objectList.bucketName;
+                this.objectKey = file.name;
+                $(this.$el).modal('show');
+            },
+            onClose: function() {
+                this.selectedFile = null;
+                this.bucketName = null;
+                this.objectKey = null;
+            },
+            confirm: async function() {
+                var _this = this;
+                var formData = new FormData();
+                var result;
+
+                if(!this.selectedFile)
+                    return ;
+
+                formData.append("file", this.selectedFile);
+
+                this.submitting = true;
+                try {
+                    result = await
+                    new Promise(function (resolve, reject) {
+                        $.ajax({
+                            url: 'api/bucket/' + _this.bucketName + '/object_upload/' + _this.objectKey,
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            type: 'POST',
+                            success: function (data, stat, response) {
+                                resolve({
+                                    data: data,
+                                    response: response
+                                });
+                            },
+                            error: function (e) {
+                                reject(e);
+                            }
+                        });
+                    });
+                    console.log(result);
+                }catch(e){
+                    console.log(e);
+                }
+                console.log(result);
+                v_buckets.goBucket(this.bucketName);
+                this.submitting = false;
+
+                this.onClose();
+                $(this.$el).modal('hide');
+            }
+        },
+        created: function() {
+        }
+    });
+
+    var v_bucketCreate = new Vue({
+        el: '#bucketCreate',
+        data: {
+            bucketName: ''
+        },
+        methods: {
+            submit: async function() {
+                var result = await bucketCreate(this.bucketName);
+                alert("result : " + JSON.stringify(result));
+                v_buckets.reload();
+            }
+        }
+    });
+
+    var v_objectShowModal = new Vue({
+        el: '#objectShowModal',
+        data: {
+            bucketName: '',
+            objectKey: '',
+            objectMetadata: null,
+            image_src: '',
+            object_data: ''
+        },
+        methods: {
+            show: function() {
+                var _this = this;
+                $('#objectShowModal').modal('show');
+                $.ajax({
+                    url: 'api/bucket/' + this.bucketName + '/object_data/' + this.objectKey,
+                    processData: false,
+                    xhr:function(){// Seems like the only way to get access to the xhr object
+                        var xhr = new XMLHttpRequest();
+                        xhr.responseType= 'blob'
+                        return xhr;
+                    },
+                    success:function(data, textStatus, request) {
+                        var blob;
+                        var contentType = request.getResponseHeader("content-type");
+                        blob = new Blob([data], {type : contentType ? contentType : _this.findMimeType(_this.objectKey)});
+                        _this.object_data = '';
+                        if(_this.isImage) {
+                            blobToDataURL(blob, function (dataurl) {
+                                if (_this.isImage) {
+                                    _this.image_src = dataurl;
+                                    console.log("_this.image_src", dataurl);
+                                }
+                            });
+                        } else if(blob.size < 1048576) {
+                            var reader = new FileReader();
+                            reader.addEventListener('loadend', function (e) {
+                                _this.object_data = e.srcElement.result;
+                            });
+                            reader.readAsText(blob);
+                        }
+                    },
+                    error: function(e) {
+                        console.log("ERROR", e);
+                    }
+                });
+            },
+            hide: function() {
+                $('#objectShowModal').modal('hide');
+            },
+            findMimeType: function(url) {
+                var pos = url.lastIndexOf('.');
+                if(pos > 0) {
+                    var extension = url.substring(pos + 1).toLowerCase();
+                    if(extension == 'jpg' || extension == 'jpeg')
+                        return 'image/jpeg';
+                    else if(extension == 'png')
+                        return 'image/png';
+                    else if(extension == 'gif')
+                        return 'image/gif';
+                    else if(extension == 'webp')
+                        return 'image/webp';
+                    return null;
+                }
+                return null;
+            },
+            jsonEncode: function(data) {
+                return JSON.stringify(data);
+            }
+        },
+        computed: {
+            isImage: function() {
+                if(this.findMimeType(this.objectKey))
+                    return true;
+                else
+                    return false;
+            }
+        }
+    });
+
+    async function bucketsGetList() {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: 'api/buckets/list',
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function() {
+                    reject();
+                }
+            });
+        });
+    }
+
+    async function bucketGetFileList(bucketName) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: 'api/bucket/' + bucketName + '/list',
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function() {
+                    reject();
+                }
+            });
+        });
+    }
+
+    async function objectGetMetadata(bucketName, key) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: 'api/bucket/' + bucketName + '/object_metadata/' + key,
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function() {
+                    reject();
+                }
+            });
+        });
+    }
+
+    async function bucketCreate(bucketName) {
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                url: 'api/buckets/create/' + bucketName,
+                success: function(data) {
+                    resolve(data);
+                },
+                error: function() {
+                    reject();
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>
